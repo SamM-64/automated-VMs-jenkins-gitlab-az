@@ -15,24 +15,18 @@ source "azure-arm" "GitLab_Server" {
   image_offer                       = "UbuntuServer"
   image_publisher                   = "Canonical"
   image_sku                         = "18.04-LTS"
-  managed_image_name                = "Samantha_M_app"
+  managed_image_name                = "Samantha_M_gitlab"
   build_resource_group_name         = "Samantha_M"
   managed_image_resource_group_name = "Samantha_M"
   os_type                           = "Linux"
-  vm_size                           = "Standard_DS2_v2"
-
-  
-  
-  
+  vm_size                           = "Standard_B4ms"
 }
 
 build {
   sources = ["source.azure-arm.GitLab_Server"]
 
+  # Provisioning: executes shell commands on the virtual machine
   provisioner "shell" {
-    inline = [
-      "export HOME=/home/packer",
-      "./setup.sh",
-    ]
+    script = "./setup.sh"
   }
 }

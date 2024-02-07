@@ -1,0 +1,46 @@
+- name: Créer l'infrastructure Azure pour Jenkins
+  hosts: localhost
+  tasks:
+    - name: Créer le groupe de ressources
+      azure_rm_resourcegroup:
+        name: Samantha_M
+        location: eastus
+
+    - name: Créer le réseau virtuel
+      azure_rm_virtualnetwork:
+        resource_group: Samantha_M
+        name: jenkins-network
+        address_prefixes: ["10.1.0.0/16"]
+
+    - name: Créer le sous-réseau
+      azure_rm_subnet:
+        resource_group: Samantha_M
+        name: jenkins-subnet
+        virtual_network_name: jenkins-network
+        address_prefix: "10.1.1.0/24"
+
+    - name: Créer l'interface réseau
+      azure_rm_networkinterface:
+        resource_group: Samantha_M
+        name: jenkins-nic
+        virtual_network_name: jenkins-network
+        subnet_name: jenkins-subnet
+        public_ip_allocation_method: Static
+
+    - name: Créer la machine virtuelle
+      azure_rm_virtualmachine:
+        resource_group: Samantha_M
+        name: jenkins-vm
+        location: eastus
+        vm_size: Standard_B1s
+        admin_username: ansible
+        ssh_password_enabled: false
+        network_interfaces: 
+          - name: jenkins-nic
+        image:
+          offer: UbuntuServer
+          publisher: Canonical
+          sku: "18.04-LTS"
+          version: latest
+        admin_ssh_key: "{{ lookup('file', '/path/to/your/public_key.pub') }}"
+        tags: "{{ tags }}"
