@@ -2,16 +2,26 @@
 data "azurerm_resource_group" "main" {
   name = "Samantha_M"
 }
+resource "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "local_file" "private_ssh_key" {
+  content         = tls_private_key.ssh_key.private_key_pem
+  filename        = "${path.root}/ssh_keys/${var.vm_name}"
+  file_permission = "0600"
+}
 
 # Locate the existing custom image
 data "azurerm_image" "image" {
-  name                = "Samantha_M_app"
+  name                = "Samantha_M_gitlab"
   resource_group_name = data.azurerm_resource_group.main.name
 }
 
 # Create virtual network
 resource "azurerm_virtual_network" "network" {
-  name                = "${data.azurerm_resource_group.main.name}-network"
+  name                = "${var.vm_name}-network"
   address_space       = ["10.0.0.0/16"]
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
@@ -21,7 +31,7 @@ resource "azurerm_virtual_network" "network" {
 
 # Create subnet
 resource "azurerm_subnet" "main" {
-  name                 = "${data.azurerm_resource_group.main.name}-subnet"
+  name                 = "${var.vm_name}-subnet"
   resource_group_name  = data.azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.network.name
   address_prefixes     = ["10.0.100.0/24"]
@@ -34,6 +44,7 @@ resource "azurerm_public_ip" "main" {
   location            = data.azurerm_resource_group.main.location
   allocation_method   = var.allocation
   sku                 = var.sku_value
+  domain_name_label   = "${var.vm_name}-ecf"
   tags                = var.tags
 }
 
@@ -66,6 +77,7 @@ resource "azurerm_virtual_machine" "VM" {
     id = data.azurerm_image.image.id
   }
 
+
   storage_os_disk {
     name              = "VM-OS"
     caching           = var.caching
@@ -82,5 +94,46 @@ resource "azurerm_virtual_machine" "VM" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
+
   tags = var.tags
+}
+
+resource "azurerm_network_security_group" "nsg-gitlab" {
+  name                = "gitlab-nsg"
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
+  
+}
+
+resource "azurerm_network_security_rule" "allow_vm" {
+      name                       = "SSH"
+      priority                   = 110
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "22"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+      resource_group_name        = data.azurerm_resource_group.main.name
+      network_security_group_name = azurerm_network_security_group.nsg-gitlab.name
+}
+
+resource "azurerm_network_security_rule" "allow_vm_http" {
+      name                       = "TCP"
+      priority                   = 100
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "80"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+      resource_group_name        = data.azurerm_resource_group.main.name
+      network_security_group_name = azurerm_network_security_group.nsg-gitlab.name
+}
+
+resource "azurerm_network_interface_security_group_association" "association_nsg_network-gitlab" {
+  network_interface_id      = azurerm_network_interface.main.id
+  network_security_group_id = azurerm_network_security_group.nsg-gitlab.id
 }

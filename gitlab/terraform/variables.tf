@@ -14,7 +14,7 @@ variable "sku_value" {
 variable "vm_name" {
   description = "The name of the virtual machine"
   type        = string
-  default     = "VM"
+  default     = "vm-gitlab"
 }
 
 variable "ip_name" {
@@ -27,7 +27,7 @@ variable "private_allocation" {
 }
 variable "vm_size" {
   type    = string
-  default = "Standard_B1s"
+  default = "Standard_B4ms"
 }
 variable "use_ssh_key" {
   description = "A boolean that indicates whether to use SSH key for authentication. If true, SSH key is used; if false, password is used."
@@ -58,23 +58,7 @@ variable "nsg_name" {
   type        = string
   default     = "nsg"
 }
-variable "network_rules" {
-  description = "List of NSG rules"
-  type = list(object({
-    name                       = string
-    priority                   = number
-    direction                  = string
-    access                     = string
-    protocol                   = string
-    source_port_range          = optional(string)
-    destination_port_range     = optional(string)
-    source_address_prefix      = optional(string)
-    destination_address_prefix = optional(string)
-    description                = optional(string)
-    }
-  ))
-  default = []
-}
+
 variable "tags" {
   description = "A mapping of tags"
   type        = map(string)
