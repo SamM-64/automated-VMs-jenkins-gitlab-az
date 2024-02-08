@@ -26,7 +26,7 @@ output "network_interface_id" {
 
 output "vm_id" {
   description = "The ID of the virtual machine"
-  value       = azurerm_virtual_machine.VM.id
+  value       = azurerm_linux_virtual_machine.vm.id
 }
 
 output "storage_account_name" {
