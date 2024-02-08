@@ -78,6 +78,6 @@ Le statut doit être "running".
 
 Accédez à l'interface de Jenkins sur le port 8080.
 
-![Interface de Gitlab](./static/img/gitlab.png)
+![Interface de Jenkins](./static/img/jenkins.png)
 
  Lors de la première connexion, récupérez le mot de passe dans `/var/jenkins/secrets/initialAdmin/Password`. Connectez-vous en tant que root pour y accéder (`sudo su`), puis copiez le mot de passe dans Jenkins et créez un utilisateur.
