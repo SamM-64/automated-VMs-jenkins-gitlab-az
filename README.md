@@ -51,8 +51,9 @@ sudo gitlab-ctl status
 
 Si tous les services indiquent "ok-run", l'installation s'est bien déroulée et Gitlab est correctement configuré.
 
-![Connexion Gitlab](./static/img/gitlab1.png)
 Accédez à l'interface de Gitlab via votre FQDN. 
+![Connexion Gitlab](./static/img/gitlab1.png)
+
 
 Pour vous connecter, utilisez l'utilisateur "root". Pour récupérer le mot de passe, accédez à `/etc/gitlab/initial-root-password`.
 ![Interface de Gitlab](./static/img/gitlab.png)
