@@ -1,31 +1,50 @@
 # Configuration d'une machine virtuelle personnalisée pour Gitlab et Jenkins
 
+  
 Ce document détaille les étapes nécessaires pour créer une machine virtuelle personnalisée dédiée aux serveurs Gitlab et Jenkins, ainsi que les processus d'installation et de configuration associés.
+
+  
 
 ## Gitlab
 
+  
 ### Création d'un principal de service Azure AD
 
+  
 Pour créer un principal de service, exécutez la commande suivante en remplaçant les valeurs nécessaires :
 
+1.  **Utilisation de la commande Azure CLI :** Utilisez la commande suivante pour créer un principal de service, en remplaçant `<subscription_id>` par l'ID de votre abonnement Azure et `<resource_group_name>` par le nom de votre groupe de ressources :
+
 ```bash
-az ad sp create-for-rbac --role Contributor --scopes /subscriptions/c56aea2c-50de-4adc-9673-6a8008892c21/resourceGroups/Samantha_M --query "{ client_id: appId, client_secret: password, tenant_id: tenant }"
+
+`az ad sp create-for-rbac --role Contributor --scopes /subscriptions/<subscription_id>/resourceGroups/<resource_group_name> --query "{ client_id: appId, client_secret: password, tenant_id: tenant }"` 
 ```
 
-Notez les informations sensibles générées (client_id, client_secret et tenant_id) et stockez-les dans un fichier `secret.auto.pkvars.hcl`.
+La création d'un principal de service Azure AD est nécessaire pour autoriser l'accès sécurisé aux ressources Azure. Voici quelques raisons pour lesquelles cette étape est importante :
 
-### Création de l'image personnalisée avec Packer
+-   **Authentification sécurisée :** Le principal de service fournit un identifiant unique (`client_id`) et un secret (`client_secret`) qui sont utilisés pour authentifier et autoriser l'application ou le script à accéder aux ressources Azure.
+    
+-   **Contrôle d'accès :** En attribuant des rôles appropriés au principal de service, vous pouvez contrôler précisément les autorisations accordées à l'application ou au script. Par exemple, en lui attribuant le rôle de contributeur, vous lui accordez des autorisations pour créer, modifier et supprimer des ressources dans le groupe de ressources spécifié.
+    
+-   **Traçabilité :** En utilisant des principaux de service distincts pour différentes applications ou scripts, vous pouvez suivre et auditer précisément l'accès aux ressources Azure. Cela permet une meilleure gestion des risques et une conformité accrue aux politiques de sécurité.
 
-Personnalisez les variables selon vos besoins. Le script `setup.sh` permet de lancer les commandes de base pour l'installation et la configuration de Gitlab. 
-Enfin, lancez la commande :
+2. Après avoir créé un principal de service Azure AD à l'aide de la commande `az ad sp create-for-rbac`, il est essentiel de stocker les informations générées de manière sécurisée. Les variables doivent être stockées dans un fichier de configuration au format HCL (HashiCorp Configuration Language), tel que `secret.auto.pkvars.hcl`, avec les valeurs formatées comme suit :
 
-```bash
-packer build .
-``` 
+```hcl
+client_id       = "your_cliendt_id"
+client_secret   = "your_client_secret"
+tenant_id       = "your_tenant_id"
+subscription_id = "your_subscription_id"
+```
+
+3.  **Personnalisation des données communes :** Dans le fichier common.auto.pkvars.hcl, modifiez les données communes telles que `project_prefix`, `project_name`, `tenant_id` et `subscription_id` en fonction de votre environnement spécifique.
+    
+4.  **Création de l'image personnalisée avec Packer :** Une fois que les variables sont configurées, lancez la construction de l'image personnalisée avec Packer en utilisant la commande `packer build .`. Cette commande exécutera les scripts de provisionnement spécifiés et créera une image conforme à vos spécifications.
+
 
 ## Infrastructure avec Terraform
 
-Modifiez les variables du fichier `variables.tf`, ainsi que `source_address_prefix`  `admin-user` dans `terraform.tf` et définissez un `admin_password`.
+Modifiez les variables du fichier `variables.tf`, ainsi que `source_address_prefix`  `admin-user` dans `terraform.tf`.
 
 Ensuite, exécutez les commandes suivantes :
 
