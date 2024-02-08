@@ -1,42 +1,24 @@
 # Livrables:
 
-## Routine : Automatisation des mises à jour des templates avec Azure DevOps
+## Procédure de mise à jour des fichiers de configuration :
 
+1. **Analyse des modifications nécessaires :** Identifiez les modifications à apporter dans vos scripts de configuration en fonction des besoins actuels, comme la modification des scripts setup.sh, cerbot, et adduser_sudoer.sh.
 
-Pour automatiser les mises à jour des templates de machines virtuelles, l'équipe des administrateurs Cloud de Prodigy Software a choisi d'utiliser Azure DevOps. Voici les étapes clés de leur solution :
+2. **Accès aux scripts :** Accédez aux scripts de configuration que vous souhaitez mettre à jour. Assurez-vous d'avoir les autorisations appropriées pour les modifier.
 
+3. **Effectuez les modifications :** Ouvrez les scripts concernés dans un éditeur de texte et apportez les modifications requises en fonction de vos besoins. Cela peut inclure la mise à jour des commandes, l'ajout de nouvelles fonctionnalités, etc.
 
-### 1. Configuration de l'environnement Azure DevOps :
+4. **Vérification des modifications :** Vérifiez attentivement les modifications apportées pour vous assurer qu'elles correspondent aux exigences spécifiées et respectent les bonnes pratiques de codage.
 
-- Création d'un projet Azure DevOps dédié à la gestion des templates de machines virtuelles.
+5. **Validation locale :** Avant de déployer les modifications, testez-les localement si possible pour vous assurer qu'elles fonctionnent comme prévu.
 
-- Configuration des pipelines CI/CD pour les serveurs GitLab et Jenkins.
+6. **Validation dans l'environnement de test :** Si vous disposez d'un environnement de test, déployez les modifications et effectuez des tests pour vérifier leur fonctionnement dans un environnement similaire à la production.
 
-### 2. Intégration des fichiers de déploiement Packer :
+7. **Déploiement :** Après avoir validé les modifications, déployez-les dans l'environnement de production en remplaçant les anciennes versions des scripts par les nouvelles.
 
-- Importation des fichiers de déploiement Packer pour les serveurs GitLab et Jenkins dans le référentiel Azure DevOps.
+8. **Vérification post-déploiement :** Une fois les modifications déployées, vérifiez attentivement le fonctionnement de l'application ou du système pour vous assurer qu'il n'y a pas d'impact négatif.
 
-### 3. Configuration des pipelines CI/CD :
-
-- Création de pipelines CI/CD pour chaque template de machine virtuelle.
-
-- Définition des étapes de pipeline pour la création, la validation et la publication des nouvelles versions des templates.
-
-### 4. Planification des mises à jour :
-
-- Planification des horaires de mise à jour pour minimiser les perturbations potentielles dans les environnements de production.
-
-- Utilisation des déclencheurs de pipeline pour déclencher automatiquement les mises à jour selon un calendrier défini.
-
-### 5. Tests et validation :
-
-- Intégration de tests automatisés dans les pipelines CI/CD pour vérifier la stabilité et la performance des nouveaux templates.
-
-- Validation manuelle des nouvelles versions des templates avant leur déploiement dans les environnements de production.
-
-**Résultats attendus :**
-
-En mettant en œuvre cette routine de mise à jour automatisée avec Azure DevOps, Prodigy Software pourra garantir la sécurité et la fiabilité de ses environnements cloud. Les templates de machines virtuelles utilisés pour les serveurs GitLab et Jenkins seront régulièrement mis à jour pour inclure les derniers correctifs de sécurité et les améliorations logicielles, contribuant ainsi à optimiser les opérations de développement et de déploiement de l'entreprise.
+9. **Documentation :** Documentez toutes les modifications apportées aux scripts de configuration, y compris les raisons des modifications, les étapes effectuées et toute autre information pertinente.
 
 
 # Dossier Preuve Professionnelle
