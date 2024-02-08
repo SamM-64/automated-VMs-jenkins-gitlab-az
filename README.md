@@ -3,7 +3,68 @@
   
 Ce document détaille les étapes nécessaires pour créer une machine virtuelle personnalisée dédiée aux serveurs Gitlab et Jenkins, ainsi que les processus d'installation et de configuration associés.
 
-  
+##  Présentation de l’arborescence du repository
+
+```
+sam-Automated-VMs
+├── README.md
+├── documentpro.md
+├── gitlab
+│   ├── packer
+│   │   ├── common.auto.pkrvars.hcl
+│   │   ├── gitlab-azure.pkr.hcl
+│   │   ├── gitlab-variables.pkr.hcl
+│   │   ├── scripts
+│   │   │   ├── adduser_sudoer.sh
+│   │   │   ├── cerbot.sh
+│   │   │   └── setup.sh
+│   │   └── secret.auto.pkrvars.hcl
+│   └── terraform
+│       ├── backend
+│       │   ├── backend.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── terraform.tfstate
+│       │   └── terraform.tfstate.backup
+│       ├── infra
+│       │   ├── data.tf
+│       │   ├── locals.tf
+│       │   ├── terraform.tf
+│       │   └── variables.tf
+│       └── ssh_keys
+│           └── vm-gitlab
+├── jenkins
+│   ├── packer
+│   │   ├── common.auto.pkvars.hcl
+│   │   ├── jenkin-azure.pkr.hcl
+│   │   ├── jenkins-variables.pkr.hcl
+│   │   ├── scripts
+│   │   │   ├── adduser_sudoer.sh
+│   │   │   ├── cerbot.sh
+│   │   │   └── setup.sh
+│   │   └── secret.auto.pkrvars.hcl
+│   └── terraform
+│       ├── backend
+│       │   ├── backend.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── terraform.tfstate
+│       │   └── terraform.tfstate.backup
+│       ├── infra
+│       │   ├── data.tf
+│       │   ├── locals.tf
+│       │   ├── terraform.tf
+│       │   └── variables.tf
+│       └── ssh_keys
+│           └── vm-jenkins
+├── static
+│   └── img
+│       ├── gitlab.png
+│       ├── gitlab1.png
+│       ├── jenkins.png
+│       └── jenkins1.png
+└── terraform.tfstate
+```
 
 ## Gitlab
 
