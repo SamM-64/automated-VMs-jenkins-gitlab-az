@@ -25,13 +25,16 @@ packer build .
 
 ## Infrastructure avec Terraform
 
-Modifiez les variables du fichier `variables.tf`, ainsi que `admin-user` et `admin-password`. Ensuite, exécutez les commandes suivantes :
+Modifiez les variables du fichier `variables.tf`, ainsi que `source_address_prefix`  `admin-user` dans `terraform.tf` et définissez un `admin_password`.
+
+Ensuite, exécutez les commandes suivantes :
 
 ```bash
 terraform init
 terraform plan
 terraform apply 
-```
+``` 
+
 Une fois l'infrastructure déployée, connectez-vous en SSH à la machine via :
 
 ```bash
@@ -49,10 +52,12 @@ sudo gitlab-ctl status
 Si tous les services indiquent "ok-run", l'installation s'est bien déroulée et Gitlab est correctement configuré.
 
 Accédez à l'interface de Gitlab via votre FQDN. 
+![Connexion Gitlab](./static/img/gitlab1.png)
 
-![Interface de Gitlab](./static/img/gitlab.png)
 
 Pour vous connecter, utilisez l'utilisateur "root". Pour récupérer le mot de passe, accédez à `/etc/gitlab/initial-root-password`.
+![Interface de Gitlab](./static/img/gitlab.png)
+
 
 Si rien ne se passe lors de l'exécution de `sudo gitlab-ctl status`, reconfigurez l'installation en accédant à `/etc/gitlab/gitlab.rb`, modifiez l'URL externe avec votre FQDN et relancez l'installation avec :
 
@@ -78,6 +83,13 @@ Le statut doit être "running".
 
 Accédez à l'interface de Jenkins sur le port 8080.
 
-![Interface de Gitlab](./static/img/gitlab.png)
+![Interface de Jenkins](./static/img/jenkins1.png)
 
  Lors de la première connexion, récupérez le mot de passe dans `/var/jenkins/secrets/initialAdmin/Password`. Connectez-vous en tant que root pour y accéder (`sudo su`), puis copiez le mot de passe dans Jenkins et créez un utilisateur.
+
+
+![Interface de Jenkins](./static/img/jenkins.png)
+
+
+
+

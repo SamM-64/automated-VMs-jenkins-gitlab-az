@@ -88,7 +88,7 @@ resource "azurerm_virtual_machine" "VM" {
   os_profile {
     computer_name  = "APPVM"
     admin_username = "sammss"
-    admin_password = "P@$$w0rd1234!"
+    admin_password = var.admin_password
   }
 
   os_profile_linux_config {
@@ -105,33 +105,34 @@ resource "azurerm_network_security_group" "nsg-jenkins" {
   
 }
 
-resource "azurerm_network_security_rule" "allow_vm_jenkins" {
-      name                       = "SSH"
-      priority                   = 110
-      direction                  = "Inbound"
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_port_range          = "*"
-      destination_port_range     = "22"
-      source_address_prefix      = "*"
-      destination_address_prefix = "*"
-      resource_group_name        = data.azurerm_resource_group.main.name
-      network_security_group_name = azurerm_network_security_group.nsg-jenkins.name
+resource "azurerm_network_security_rule" "allow_ssh" {
+  name                        = "AllowSSH"
+  priority                    = 110
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "91.162.171.239"
+  destination_address_prefix  = "*"
+  resource_group_name         = data.azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.nsg-jenkins.name
 }
 
-resource "azurerm_network_security_rule" "allow_vm_http_jenkins" {
-      name                       = "TCP"
-      priority                   = 100
-      direction                  = "Inbound"
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_port_range          = "*"
-      destination_port_range     = "8080"
-      source_address_prefix      = "*"
-      destination_address_prefix = "*"
-      resource_group_name        = data.azurerm_resource_group.main.name
-      network_security_group_name = azurerm_network_security_group.nsg-jenkins.name
+resource "azurerm_network_security_rule" "allow_http" {
+  name                        = "AllowHTTP"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "8080"
+  source_address_prefix       = "91.162.171.239"
+  destination_address_prefix  = "*"
+  resource_group_name         = data.azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.nsg-jenkins.name
 }
+
 
 resource "azurerm_network_interface_security_group_association" "association_nsg_network-jenkins" {
   network_interface_id      = azurerm_network_interface.main.id
