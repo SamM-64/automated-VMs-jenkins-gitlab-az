@@ -9,11 +9,6 @@ resource "local_file" "private_ssh_key" {
   file_permission = "0600"
 }
 
-# Locate the existing custom image
-data "azurerm_image" "image" {
-  name                = "Samantha_M_jenkins"
-  resource_group_name = data.azurerm_resource_group.main.name
-}
 
 # Create virtual network
 resource "azurerm_virtual_network" "network" {
