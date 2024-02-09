@@ -1,6 +1,6 @@
 .terraform
 .env
-ssh_keys
+ssh
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.lock.hcl
