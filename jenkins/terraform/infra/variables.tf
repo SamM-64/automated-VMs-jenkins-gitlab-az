@@ -68,9 +68,3 @@ variable "tags" {
     environment = "test"
   }
 }
-
-variable "admin_password" {
-  description = "Virtual machine administrator password"
-  type        = string
-}
-

@@ -1,7 +1,7 @@
 locals {
   build_date = formatdate("YYYYMMDD-hhmmss", timestamp())
   image_name = "${var.project_prefix}-${var.project_name}-${local.build_date}"
-  scripts_path = "${path.root}/../scripts"
+  scripts_path = "${path.root}/scripts"
 }
 
 # Définition de la source pour créer une image Azure ARM pour gitlab Server
@@ -31,12 +31,11 @@ source "azure-arm" "gitlab_Server" {
 }
 
 build {
-  sources = ["source.azure-arm.ubuntu"]
+  sources = ["source.azure-arm.gitlab_Server"]
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
     scripts = [
       "${local.scripts_path}/setup.sh",
-      "${local.scripts_path}/cerbot",
       "${local.scripts_path}/adduser_sudoer.sh",
     ]
   }

@@ -5,12 +5,13 @@ sudo apt-get update
 sudo apt-get install certbot -y
 
 # Générer le certificat Let's Encrypt pour votre domaine
-sudo certbot certonly --standalone -d votredomaine.com
+sudo certbot certonly --standalone -d vm-gitlab-ecf.westeurope.cloudapp.azure.com
 
-# Configurer Jenkins pour utiliser le certificat
-sudo sed -i 's|HTTP_PORT=8080|HTTP_PORT=-1|g' /etc/default/jenkins
-sudo sed -i 's|JENKINS_HTTPS_KEYSTORE=.*|JENKINS_HTTPS_KEYSTORE="/etc/letsencrypt/live/votredomaine.com/fullchain.pem"|g' /etc/default/jenkins
-sudo sed -i 's|JENKINS_HTTPS_KEYSTORE_PASSWORD=.*|JENKINS_HTTPS_KEYSTORE_PASSWORD="votre_mot_de_passe"|g' /etc/default/jenkins
+# Configurer GitLab pour utiliser le certificat
+sudo sed -i 's|external_url .*$|external_url "https://vm-gitlab-ecf.westeurope.cloudapp.azure.com"|g' /etc/gitlab/gitlab.rb
+sudo sed -i '/^nginx\['"'"'ssl_certificate'"'"'\] .*/a\nginx['"'"'ssl_certificate_key'"'"'] = "/etc/letsencrypt/live/vm-gitlab-ecf.westeurope.cloudapp.azure.com/privkey.pem"' /etc/gitlab/gitlab.rb
+sudo sed -i '/^nginx\['"'"'ssl_certificate'"'"'\] .*/a\nginx['"'"'ssl_certificate'"'"'] = "/etc/letsencrypt/live/vm-gitlab-ecf.westeurope.cloudapp.azure.com/fullchain.pem"' /etc/gitlab/gitlab.rb
 
-# Redémarrer Jenkins
-sudo systemctl restart jenkins
+# Reconfigurer GitLab
+sudo gitlab-ctl reconfigure
+

@@ -5,7 +5,7 @@ resource "tls_private_key" "ssh_key" {
 
 resource "local_file" "private_ssh_key" {
   content         = tls_private_key.ssh_key.private_key_pem
-  filename        = "${path.root}/ssh_keys/${var.vm_name}"
+  filename        = "${path.root}/ssh/id_rsa"
   file_permission = "0600"
 }
 
@@ -18,7 +18,7 @@ data "azurerm_image" "image" {
 # Create virtual network
 resource "azurerm_virtual_network" "network" {
   name                = "${var.vm_name}-network"
-  address_space       = ["10.1.0.0/16"]
+  address_space       = ["10.0.0.0/16"]
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
 
@@ -30,7 +30,7 @@ resource "azurerm_subnet" "main" {
   name                 = "${var.vm_name}-subnet"
   resource_group_name  = data.azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.network.name
-  address_prefixes     = ["10.1.1.0/24"]
+  address_prefixes     = ["10.0.1.0/24"]
 }
 
 #Create a public IP for the VM, if public_access variable is set to true
@@ -66,7 +66,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   admin_username        = local.ssh_user
   network_interface_ids = [azurerm_network_interface.main.id]
   size                  = var.vm_size
- 
+
   admin_ssh_key {
     public_key = tls_private_key.ssh_key.public_key_openssh
     username   = local.ssh_user
@@ -80,12 +80,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 
-resource "azurerm_network_security_group" "nsg-jenkins" {
-  name                = "jenkins-nsg"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
-  
-}
+
 
 # NSG Rules
 locals {
@@ -151,5 +146,5 @@ resource "azurerm_network_security_group" "vm" {
 
 resource "azurerm_network_interface_security_group_association" "association_nsg_network-jenkins" {
   network_interface_id      = azurerm_network_interface.main.id
-  network_security_group_id = azurerm_network_security_group.nsg-jenkins.id
+  network_security_group_id = azurerm_network_security_group.vm.id
 }
