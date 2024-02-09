@@ -1,6 +1,6 @@
 locals {
   build_date = formatdate("YYYYMMDD-hhmmss", timestamp())
-  image_name = "${var.project_prefix}-${var.project_name}-${local.build_date}"
+  image_name = "${var.project_prefix}-${var.project_name}-${local.build_date}-gitlab"
   scripts_path = "${path.root}/scripts"
 }
 
