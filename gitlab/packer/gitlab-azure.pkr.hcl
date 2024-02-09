@@ -21,7 +21,7 @@ source "azure-arm" "gitlab_Server" {
   image_offer                       = "0001-com-ubuntu-server-jammy"
   image_publisher                   = "Canonical"
   image_sku                         = "22_04-lts"
-  build_resource_group_name         = "Samantha_M"
+  build_resource_group_name         = var.project_prefix
   os_type                           = "Linux"
   vm_size                           = "Standard_B4ms"
 
