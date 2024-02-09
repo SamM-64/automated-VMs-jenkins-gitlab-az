@@ -5,7 +5,7 @@ resource "tls_private_key" "ssh_key" {
 
 resource "local_file" "private_ssh_key" {
   content         = tls_private_key.ssh_key.private_key_pem
-  filename        = "${path.root}/ssh_keys/${var.vm_name}"
+  filename        = "${path.root}/ssh/id_rsa"
   file_permission = "0600"
 }
 
@@ -80,12 +80,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 
-resource "azurerm_network_security_group" "nsg-gitlab" {
-  name                = "gitlab-nsg"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
 
-}
 
 # NSG Rules
 locals {
@@ -151,5 +146,5 @@ resource "azurerm_network_security_group" "vm" {
 
 resource "azurerm_network_interface_security_group_association" "association_nsg_network-gitlab" {
   network_interface_id      = azurerm_network_interface.main.id
-  network_security_group_id = azurerm_network_security_group.nsg-gitlab.id
+  network_security_group_id = azurerm_network_security_group.vm.id
 }

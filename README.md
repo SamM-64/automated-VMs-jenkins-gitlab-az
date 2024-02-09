@@ -100,7 +100,7 @@ subscription_id = "your_subscription_id"
 
 3.  **Personnalisation des données communes :** Dans le fichier common.auto.pkvars.hcl, modifiez les données communes telles que `project_prefix`, `project_name`, `tenant_id` et `subscription_id` en fonction de votre environnement spécifique.
     
-4.  **Création de l'image personnalisée avec Packer :** Une fois que les variables sont configurées, lancez la construction de l'image personnalisée avec Packer en utilisant la commande `packer build .`. Cette commande exécutera les scripts de provisionnement spécifiés et créera une image conforme à vos spécifications.
+4.  **Création de l'image personnalisée avec Packer :** Une fois que les variables sont configurées, dans ```sam-automated-vm/packer``` lancez la construction de l'image personnalisée avec Packer en utilisant la commande `packer build .`. Cette commande exécutera les scripts de provisionnement spécifiés et créera une image conforme à vos spécifications.
 
 
 ## Infrastructure avec Terraform
@@ -108,7 +108,8 @@ subscription_id = "your_subscription_id"
 Modifiez les variables du fichier `variables.tf`, ainsi que `source_address_prefix`  `admin-user` dans `terraform.tf`.
 
 Ensuite, exécutez les commandes suivantes :
-
+```sam-automated-vm/terraform/infra```
+ 
 ```bash
 terraform init
 terraform plan
@@ -121,7 +122,7 @@ Une fois l'infrastructure déployée, connectez-vous en SSH à la machine via :
 ssh <you_admin_username<@<ip_public>
 ```
 
-Lors de l'application, une clé SSH est créée dans le dossier `ssh_key`.
+Lors de l'application, une clé SSH est créée dans le dossier `ssh`.
 
 Vérifiez l'installation de Gitlab sur la machine avec :
 
