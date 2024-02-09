@@ -21,21 +21,26 @@ sam-Automated-VMs
 │   │   └── secret.auto.pkrvars.hcl
 │   └── terraform
 │       ├── backend
-│       │   ├── backend.tf
 │       │   ├── output.tf
 │       │   ├── provider.tf
 │       │   ├── terraform.tfstate
-│       │   └── terraform.tfstate.backup
+│       │   ├── terraform.tfstate.backup
+│       │   └── version.tf
 │       ├── infra
 │       │   ├── data.tf
 │       │   ├── locals.tf
+│       │   ├── provider.tf
+│       │   ├── ssh
+│       │   │   └── id_rsa
 │       │   ├── terraform.tf
-│       │   └── variables.tf
-│       └── ssh_keys
-│           └── vm-gitlab
+│       │   ├── terraform.tfstate
+│       │   ├── terraform.tfstate.backup
+│       │   ├── variables.tf
+│       │   └── versions.tf
+│       └── terraform.tfstate
 ├── jenkins
 │   ├── packer
-│   │   ├── common.auto.pkvars.hcl
+│   │   ├── common.auto.pkrvars.hcl
 │   │   ├── jenkin-azure.pkr.hcl
 │   │   ├── jenkins-variables.pkr.hcl
 │   │   ├── scripts
@@ -45,7 +50,6 @@ sam-Automated-VMs
 │   │   └── secret.auto.pkrvars.hcl
 │   └── terraform
 │       ├── backend
-│       │   ├── backend.tf
 │       │   ├── output.tf
 │       │   ├── provider.tf
 │       │   ├── terraform.tfstate
@@ -53,17 +57,21 @@ sam-Automated-VMs
 │       ├── infra
 │       │   ├── data.tf
 │       │   ├── locals.tf
+│       │   ├── provider.tf
+│       │   ├── ssh
+│       │   │   └── id_rsa
 │       │   ├── terraform.tf
-│       │   └── variables.tf
-│       └── ssh_keys
-│           └── vm-jenkins
-├── static
-│   └── img
-│       ├── gitlab.png
-│       ├── gitlab1.png
-│       ├── jenkins.png
-│       └── jenkins1.png
-└── terraform.tfstate
+│       │   ├── terraform.tfstate
+│       │   ├── terraform.tfstate.backup
+│       │   ├── variables.tf
+│       │   └── versions.tf
+│       └── terraform.tfstate
+└── static
+    └── img
+        ├── gitlab.png
+        ├── gitlab1.png
+        ├── jenkins.png
+        └── jenkins1.png
 ```
 
 ## Gitlab
