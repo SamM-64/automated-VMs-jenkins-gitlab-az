@@ -9,20 +9,12 @@ resource "local_file" "private_ssh_key" {
   file_permission = "0600"
 }
 
-# Locate the existing custom image
-data "azurerm_image" "image" {
-  name                = "Samantha_M_gitlab"
-  resource_group_name = data.azurerm_resource_group.main.name
-}
-
 # Create virtual network
 resource "azurerm_virtual_network" "network" {
   name                = "${var.vm_name}-network"
   address_space       = ["10.1.0.0/16"]
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
-
-
 }
 
 # Create subnet
@@ -78,9 +70,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
   source_image_id = data.azurerm_image.linux_packer.id
 }
-
-
-
 
 # NSG Rules
 locals {
