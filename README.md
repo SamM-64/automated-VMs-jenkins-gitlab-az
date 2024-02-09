@@ -97,7 +97,7 @@ La création d'un principal de service Azure AD est nécessaire pour autoriser l
     
 -   **Traçabilité :** En utilisant des principaux de service distincts pour différentes applications ou scripts, vous pouvez suivre et auditer précisément l'accès aux ressources Azure. Cela permet une meilleure gestion des risques et une conformité accrue aux politiques de sécurité.
 
-2. Après avoir créé un principal de service Azure AD à l'aide de la commande `az ad sp create-for-rbac`, il est essentiel de stocker les informations générées de manière sécurisée. Les variables doivent être stockées dans un fichier de configuration au format HCL (HashiCorp Configuration Language), tel que `*.auto.pkvars.hcl`, avec les valeurs formatées comme suit :
+2. Après avoir créé un principal de service Azure AD à l'aide de la commande `az ad sp create-for-rbac`, il est essentiel de stocker les informations générées de manière sécurisée. Les variables doivent être stockées dans un fichier de configuration au format HCL (HashiCorp Configuration Language), tel que `secret.auto.pkrvars.hcl`, avec les valeurs formatées comme suit :
 
 ```hcl
 client_id       = "your_cliendt_id"
